@@ -1,4 +1,5 @@
 /* Import node's http module: */
+var handleRequest = require('./request-handler');
 var http = require('http');
 
 
