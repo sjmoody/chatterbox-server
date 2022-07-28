@@ -16,6 +16,27 @@ var port = 3000;
 var ip = '127.0.0.1';
 
 
+// var defaultCorsHeaders = {
+//   'access-control-allow-origin': '*',
+//   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
+//   'access-control-allow-headers': 'content-type, accept, authorization',
+//   'access-control-max-age': 10 // Seconds.
+// };
+// var rh = function(request, response) {
+
+//   console.log('Serving request type ' + request.method + ' for url ' + request.url);
+
+//   var statusCode = 200;
+
+//   var headers = defaultCorsHeaders;
+
+//   headers['Content-Type'] = 'text/plain';
+
+//   response.writeHead(statusCode, headers);
+
+//   response.end('Hello, World!');
+// };
+
 
 // We use node's http module to create a server.
 //
@@ -23,7 +44,7 @@ var ip = '127.0.0.1';
 // incoming requests.
 //
 // After creating the server, we will tell it to listen on the given port and IP. */
-var server = http.createServer(handleRequest);
+var server = http.createServer(handleRequest.requestHandler);
 console.log('Listening on http://' + ip + ':' + port);
 server.listen(port, ip);
 
