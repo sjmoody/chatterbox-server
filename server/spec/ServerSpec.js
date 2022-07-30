@@ -51,9 +51,39 @@ describe('Node Server Request Listener Function', function() {
 
     // Testing for a newline isn't a valid test
     // TODO: Replace with with a valid test
-    // expect(res._data).to.equal(JSON.stringify('\n'));
+    // expect(res._data[0]).to.equal(JSON.stringify('\n')); // should stringify stubMsg?=======
     expect(res._ended).to.equal(true);
   });
+
+  // it('POST should add the new message to the database', function() {
+  //   var stubMsg = {
+  //     username: 'Jono',
+  //     text: 'Do my bidding!'
+  //   };
+  //   var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+  //   var res = new stubs.response();
+
+  //   handler.requestHandler(req, res);
+
+  //   expect(JSON.stringify(handler.Messages._data)).to.include(JSON.stringify(stubMsg));
+
+  //   expect(res._ended).to.equal(true);
+  // });
+
+  // it('The data Added to the database upon a POST request should not be stringified', function() {
+  //   var stubMsg = {
+  //     username: 'Jono',
+  //     text: 'Do my bidding!'
+  //   };
+  //   var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+  //   var res = new stubs.response();
+
+  //   handler.requestHandler(req, res);
+
+  //   expect(handler.Messages._data[handler.Messages._data.length - 1]).to.be.a('object');
+
+  //   expect(res._ended).to.equal(true);
+  // });
 
   it('Should respond with messages that were previously posted', function() {
     var stubMsg = {

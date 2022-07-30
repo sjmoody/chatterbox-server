@@ -26,6 +26,7 @@ var App = {
       if (data && data.length) {
         Rooms.update(data, RoomsView.render);
         Messages.update(data, MessagesView.render);
+        console.log(data);
       }
       callback();
       return;
