@@ -66,4 +66,34 @@ describe('server', function() {
   });
 
 
+  it('Should allow previously posted messages to be posted', function(done) {
+
+    var requestParams = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        text: 'Do my bidding!'}
+    };
+    var requestParams2 = {method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jono',
+        text: 'Do my bidding!'}
+    };
+
+    request(requestParams, function(error, response, body) {
+      request(requestParams2, function(error, response, body) {
+        request('http://127.0.0.1:3000/classes/messages', function(error, res1, body) {
+          expect(res1.statusCode).to.equal(200);
+          var messages = JSON.parse(res1.body);
+          expect(messages.length).to.be.above(1);
+          expect(messages[0].username).to.equal('Jono');
+          expect(messages[0].text).to.equal('Do my bidding!');
+          expect(messages[1].username).to.equal('Jono');
+          expect(messages[1].text).to.equal('Do my bidding!');
+          done();
+        });
+      });
+    });
+  });
 });
