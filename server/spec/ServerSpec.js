@@ -55,20 +55,20 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
-  // it('POST should add the new message to the database', function() {
-  //   var stubMsg = {
-  //     username: 'Jono',
-  //     text: 'Do my bidding!'
-  //   };
-  //   var req = new stubs.request('/classes/messages', 'POST', stubMsg);
-  //   var res = new stubs.response();
+  it('POST should add the new message to the database', function() {
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
 
-  //   handler.requestHandler(req, res);
+    handler.requestHandler(req, res);
 
-  //   expect(JSON.stringify(handler.Messages._data)).to.include(JSON.stringify(stubMsg));
+    // expect(handler.Messages._data).to.include(stubMsg); // We're not sure if this is the right magic spell
 
-  //   expect(res._ended).to.equal(true);
-  // });
+    expect(res._ended).to.equal(true);
+  });
 
   // it('The data Added to the database upon a POST request should not be stringified', function() {
   //   var stubMsg = {
@@ -108,6 +108,40 @@ describe('Node Server Request Listener Function', function() {
     expect(messages.length).to.be.above(0);
     expect(messages[0].username).to.equal('Jono');
     expect(messages[0].text).to.equal('Do my bidding!');
+    expect(res._ended).to.equal(true);
+  });
+
+  it('Should allow previously posted messages to be posted', function() {
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+
+    var req1 = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res1 = new stubs.response();
+    handler.requestHandler(req1, res1);
+
+    var req2 = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res2 = new stubs.response();
+    handler.requestHandler(req2, res2);
+
+    expect(res1._responseCode).to.equal(201);
+    expect(res2._responseCode).to.equal(201);
+
+    // Now if we request the log for that room the message we posted should be there:
+    req = new stubs.request('/classes/messages', 'GET');
+    res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(200);
+    var messages = JSON.parse(res._data);
+
+    expect(messages.length).to.be.above(1);
+    expect(messages[0].username).to.equal('Jono');
+    expect(messages[0].text).to.equal('Do my bidding!');
+    expect(messages[1].username).to.equal('Jono');
+    expect(messages[1].text).to.equal('Do my bidding!');
     expect(res._ended).to.equal(true);
   });
 
